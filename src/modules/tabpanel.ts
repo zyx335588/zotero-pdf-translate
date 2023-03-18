@@ -170,6 +170,7 @@ function buildPanel(panel: HTMLElement, refID: string, force: boolean = false) {
               id: makeId("services"),
               attributes: {
                 flex: "1",
+                tooltiptext:getString("readerTabPanel.menulist.translationEngine.tooltiptext"),
               },
               listeners: [
                 {
@@ -199,6 +200,48 @@ function buildPanel(panel: HTMLElement, refID: string, force: boolean = false) {
                     attributes: {
                       label: getString(`service.${service.id}`),
                       value: service.id,
+                      tooltiptext: getString(`service.${service.id}`),
+                    },
+                  })),
+                },
+              ],
+            },
+            {
+              tag: "menulist",
+              id: makeId("dictservices"),
+              attributes: {
+                flex: "1",
+                tooltiptext:getString("readerTabPanel.menulist.dictionary.tooltiptext"),
+              },
+              listeners: [
+                {
+                  type: "command",
+                  listener: (e: Event) => {
+                    const newService = (e.target as XUL.MenuList).value;
+                    setPref("translateSource", newService);
+                    addon.hooks.onReaderTabPanelRefresh();
+                    const data = getLastTranslateTask();
+                    if (!data) {
+                      return;
+                    }
+                    data.service = newService;
+                    addon.hooks.onTranslate(undefined, {
+                      noCheckZoteroItemLanguage: true,
+                    });
+                  },
+                },
+              ],
+              children: [
+                {
+                  tag: "menupopup",
+                  children: SERVICES.filter(
+                    (service) => service.type === "word"
+                  ).map((service) => ({
+                    tag: "menuitem",
+                    attributes: {
+                      label: getString(`service.${service.id}`),
+                      value: service.id,
+                      tooltiptext: getString(`service.${service.id}`),
                     },
                   })),
                 },
