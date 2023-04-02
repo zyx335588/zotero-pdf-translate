@@ -85,7 +85,7 @@ function onNotify(
     if (getPref("enableComment")) {
       addon.hooks.onTranslateInBatch(
         annotationItems
-          .map((item) => addTranslateAnnotationTask(item.id))
+          .map((item) => addTranslateAnnotationTask(item.id,true))
           .filter((task) => task) as TranslateTask[],
         { noDisplay: true }
       );

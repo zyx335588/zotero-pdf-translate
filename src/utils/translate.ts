@@ -176,12 +176,27 @@ export function addTranslateTask(
   return newTask;
 }
 
-export function addTranslateAnnotationTask(itemId: number) {
+export function addTranslateAnnotationTask(itemId: number, auto: boolean = false) {
   const item = Zotero.Items.get(itemId);
   if (!item) {
     return;
   }
-  return addTranslateTask(item.annotationText, item.id, "annotation");
+  if (!auto) {
+    return addTranslateTask(item.annotationText, item.id, "annotation");
+  }
+  const translateColorListString = getPref("translateAnnotationColorList") as string;
+  const enableAllAnnotation = getPref("enableAllAnnotation") as boolean
+  const translateColorList = translateColorListString
+                              .toLowerCase()
+                              .replace(" ","")
+                              .replace("，", ",")
+                              .split(",");
+  if (enableAllAnnotation || translateColorList.includes(item.annotationColor)) {
+    return addTranslateTask(item.annotationText, item.id, "annotation");
+  } else {
+    return;
+  }
+  
 }
 
 export function addTranslateTitleTask(

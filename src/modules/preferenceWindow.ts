@@ -1,5 +1,5 @@
 import { config } from "../../package.json";
-import { getService, LANG_CODE, SERVICES } from "../utils/config";
+import { getService, colorValueName, LANG_CODE, SERVICES } from "../utils/config";
 import { getString } from "../utils/locale";
 import { getPref, setPref } from "../utils/prefs";
 import {
@@ -25,6 +25,9 @@ export function registerPrefsScripts(_window: Window) {
   buildPrefsPane();
   updatePrefsPaneDefault();
 }
+
+const colorNames = Object.values(colorValueName);
+const colorValues = Object.keys(colorValueName);
 
 function buildPrefsPane() {
   const doc = addon.data.prefs.window?.document;
@@ -184,6 +187,36 @@ function buildPrefsPane() {
     });
 
   doc
+    .querySelector(`#${makeId("enableComment")}`)
+    ?.addEventListener("command", (e: Event) => {
+      onPrefsEvents("setAutoTranslateAnnotation");
+    });
+  
+  
+  colorValues.forEach((colorValue) => {
+    const colorName = colorValueName[colorValue];
+    const elemIdStr = `enable${colorName}Annotation`;
+    doc
+      .querySelector(`#${makeId(elemIdStr)}`)
+      ?.addEventListener("command", (e: Event) => {
+        ztoolkit.log("$$$$$$$$$$$$");
+        updateTransAnnoColorListFromChkbox(colorValue);
+      });  
+  });
+
+  doc
+    .querySelector(`#${makeId("enableAllAnnotation")}`)
+    ?.addEventListener("command", (e: Event) => {
+      updateTransAnnoColorListFromChkbox("all");
+  });
+  
+  doc
+    .querySelector(`#${makeId("enableOtherAnnotation")}`)
+    ?.addEventListener("blur", (e: Event) => {
+      updateTransAnnoColorListFromInput();
+  });
+
+  doc
     .querySelector(`#${makeId("enablePopup")}`)
     ?.addEventListener("command", (e: Event) => {
       onPrefsEvents("setEnablePopup");
@@ -232,7 +265,144 @@ function updatePrefsPaneDefault() {
   onPrefsEvents("setUseWordService", false);
   onPrefsEvents("setSentenceSecret", false);
   onPrefsEvents("setWordSecret", false);
+  // loadAutoTranslateAnnotationColor();  
 }
+
+function updateTransAnnoColorListFromChkbox(colorValue: string) {
+  const doc = addon.data.prefs.window?.document;
+  if (!doc) {
+    return;
+  }
+
+  if (colorValue === "all") {
+    loadAutoTranslateAnnotationColor();
+    return;
+  }
+
+  const colorName = colorValueName[colorValue];
+  const elemIdStr = `enable${colorName}Annotation`;
+  const colorList = (getPref("translateAnnotationColorList") as string)
+                  .replace(" ", "")
+                  .split(",");
+  ztoolkit.log('chk-colorList:');
+  ztoolkit.log(colorList);
+
+  let newColorList:string[] = [];
+  let checked = ((doc.querySelector(`#${makeId(elemIdStr)}`)) as XUL.Checkbox)
+                  ?.checked;
+  ztoolkit.log(`chk-checked: ${colorValue}, ${checked}`);
+
+  if (checked) {
+    colorList.push(colorValue);
+    newColorList = Array.from(new Set(colorList));
+    ztoolkit.log(`chk-f1-newColorList:`);
+    ztoolkit.log(newColorList);
+  } else {
+    newColorList = colorList.filter(v => {
+      if (v.toLowerCase() !== colorValue) return v;});
+    ztoolkit.log(`chk-f2-newColorList:`);
+    ztoolkit.log(newColorList);
+    newColorList = Array.from(new Set(newColorList));
+  }
+
+  ztoolkit.log(`chk-newColorList:`);
+  ztoolkit.log(newColorList);
+
+  setPref("translateAnnotationColorList", newColorList.join(",").replace(" ",""));
+  loadAutoTranslateAnnotationColor();
+}
+
+function updateTransAnnoColorListFromInput() {
+  const doc = addon.data.prefs.window?.document;
+  if (!doc) {
+    return;
+  }
+
+  let buildinColorList: string[] = [];
+  let inputColorList: string[] = [];
+  let newColorList: string[] = [];
+  colorValues.forEach((colorValue) => {
+    const colorName = colorValueName[colorValue];
+    const elemIdStr = `enable${colorName}Annotation`;
+    let checked = ((doc.querySelector(`#${makeId(elemIdStr)}`)) as XUL.Checkbox)
+                  .checked;
+    if (checked) {
+      buildinColorList.push(colorValue);
+    }
+  });
+
+  const inputColorString = (doc.querySelector(
+      `#${makeId("enableOtherAnnotation")}`
+      ) as HTMLInputElement
+    ).value
+  if (inputColorString.length > 0) {
+    inputColorList = inputColorString.toLowerCase()
+                      .replace(" ", "")
+                      .replace("，",",")
+                      .split(",");
+  }
+
+  newColorList = buildinColorList.concat(inputColorList);
+  newColorList = Array.from(new Set(newColorList));
+
+  setPref("translateAnnotationColorList", newColorList.join(","));
+  loadAutoTranslateAnnotationColor();
+}
+
+function loadAutoTranslateAnnotationColor() {
+  const doc = addon.data.prefs.window?.document;
+  if (!doc) {
+    return;
+  }
+
+  // 获取设置文件中的 颜色列表 ;并在设置中显示对应的选项
+  const colorListString = getPref("translateAnnotationColorList") as string;
+  const checkedAllAnnotation = getPref("enableAllAnnotation") as boolean;
+  const checkedEnableComment = getPref("enableComment") as boolean;
+  const disabled = (!checkedEnableComment || checkedAllAnnotation) as boolean
+  const colorList = colorListString.replace(" ","").split(",");
+  const inputOtherAnnotationBox 
+          = doc.querySelector(`#${makeId("enableOtherAnnotation")}`) as HTMLInputElement;
+  const inputOtherAnnotationLabel 
+          = doc.querySelector(`#${makeId("enableOtherAnnotationLabel")}`) as XUL.Label;
+  const enableAllAnnotationChkbox
+          = doc.querySelector(`#${makeId("enableAllAnnotation")}`) as XUL.Checkbox
+  
+  const inputOtherAnnotationBoxValue = colorList.filter((colorValue) =>{
+      if(!colorValues.includes(colorValue)) return colorValue;
+    }).join(",")
+      .replace(" ","")
+      .replace("，", ",");
+
+  ztoolkit.log(`colorListSting: ${colorListString}`);
+  ztoolkit.log(`checkedAllAnnotation: ${checkedAllAnnotation}`);
+  ztoolkit.log(`checkedEnableComment: ${checkedEnableComment}`);
+  ztoolkit.log(`disabled: ${disabled}`);
+  ztoolkit.log(`colorList:`);
+  ztoolkit.log(colorList);
+  ztoolkit.log(`colorValues:`);
+  ztoolkit.log(colorValues);
+  ztoolkit.log(`inputOtherAnnotationBoxValue: ${inputOtherAnnotationBoxValue}`);
+
+  inputOtherAnnotationBox.setAttribute("value",inputOtherAnnotationBoxValue);
+  
+  enableAllAnnotationChkbox.checked = checkedAllAnnotation;
+  enableAllAnnotationChkbox.disabled = !checkedEnableComment;
+  inputOtherAnnotationBox.readOnly = disabled;
+  inputOtherAnnotationLabel.disabled = disabled;
+
+  colorValues.forEach ((colorValue) => {
+    const colorName = colorValueName[colorValue];
+    const elemIdStr = `enable${colorName}Annotation`;
+    const checked: boolean = colorList?.includes(colorValue);
+    ((doc.querySelector(`#${makeId(elemIdStr)}`)) as XUL.Checkbox)
+        .checked = checked;
+    ((doc.querySelector(`#${makeId(elemIdStr)}`)) as XUL.Checkbox)
+        .disabled = disabled;
+  });
+  
+}
+
 
 function onPrefsEvents(type: string, fromElement: boolean = true) {
   const doc = addon.data.prefs.window?.document;
@@ -259,6 +429,7 @@ function onPrefsEvents(type: string, fromElement: boolean = true) {
           : (getPref("enableComment") as boolean);
         const hidden = !elemValue;
         setDisabled("auto-annotation", hidden);
+        loadAutoTranslateAnnotationColor();
         addon.hooks.onReaderTabPanelRefresh();
       }
       break;

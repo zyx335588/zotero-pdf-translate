@@ -36,3 +36,5 @@ pref("__prefsPrefix__.showPlayBtn", true);
 pref("__prefsPrefix__.disabledLanguages", "");
 pref("__prefsPrefix__.extraEngines", "");
 pref("__prefsPrefix__.titleColumnMode", "raw");
+pref("__prefsPrefix__.translateAnnotationColorList", "#ffd400,#ff6666,#5fb236,#2ea8e5,#a28ae5,#e56eee,#f19837,#aaaaaa");
+pref("__prefsPrefix__.enableAllAnotation", true);

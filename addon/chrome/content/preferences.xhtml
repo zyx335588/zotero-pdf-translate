@@ -10,20 +10,90 @@
       native="true"
       preference="__prefsPrefix__.enableAuto"
     />
-    <hbox>
+    <vbox>
       <checkbox
         id="__addonRef__-enableComment"
         label="&zotero.__addonRef__.pref.basic.enableComment.label;"
         native="true"
         preference="__prefsPrefix__.enableComment"
       />
-      <radiogroup
-        id="__addonRef__-annotationTranslationPosition"
-        class="auto-annotation"
-        orient="horizontal"
-        native="true"
-        preference="__prefsPrefix__.annotationTranslationPosition"
-      >
+      <hbox>
+        <checkbox
+          id="__addonRef__-enableYellowAnnotation"
+          class="auto-annotation-color"
+          label="&zotero.__addonRef__.pref.basic.enableYellowAnnotation.label;"
+          native="true"
+        />
+        <checkbox
+          id="__addonRef__-enableRedAnnotation"
+          class="auto-annotation-color"
+          label="&zotero.__addonRef__.pref.basic.enableRedAnnotation.label;"
+          native="true"
+        />
+        <checkbox
+          id="__addonRef__-enableGreenAnnotation"
+          class="auto-annotation-color"
+          label="&zotero.__addonRef__.pref.basic.enableGreenAnnotation.label;"
+          native="true"
+        />
+        <checkbox
+          id="__addonRef__-enableBlueAnnotation"
+          class="auto-annotation-color"
+          label="&zotero.__addonRef__.pref.basic.enableBlueAnnotation.label;"
+          native="true"
+        />
+      </hbox>
+      <hbox>
+        <checkbox
+          id="__addonRef__-enablePurpleAnnotation"
+          class="auto-annotation-color"
+          label="&zotero.__addonRef__.pref.basic.enablePurpleAnnotation.label;"
+          native="true"
+        />
+        <checkbox
+          id="__addonRef__-enableMagentaAnnotation"
+          class="auto-annotation-color"
+          label="&zotero.__addonRef__.pref.basic.enableMagentaAnnotation.label;"
+          native="true"
+        />
+        <checkbox
+          id="__addonRef__-enableOrangeAnnotation"
+          class="auto-annotation-color"
+          label="&zotero.__addonRef__.pref.basic.enableOrangeAnnotation.label;"
+          native="true"
+        />
+        <checkbox
+          id="__addonRef__-enableGrayAnnotation"
+          class="auto-annotation-color"
+          label="&zotero.__addonRef__.pref.basic.enableGrayAnnotation.label;"
+          native="true"
+        />
+      </hbox>
+      <hbox>
+        <label
+          id="__addonRef__-enableOtherAnnotationLabel"
+          value="&zotero.__addonRef__.pref.basic.enableOtherAnnotation.label;"
+        ></label>
+        <html:input
+          type="text"
+          id="__addonRef__-enableOtherAnnotation"
+          class="auto-annotation-color"
+        ></html:input>
+        <checkbox
+          id="__addonRef__-enableAllAnnotation"
+          label="&zotero.__addonRef__.pref.basic.enableAllAnnotation.label;"
+          native="true"
+          preference="__prefsPrefix__.enableAllAnnotation"
+        />  
+      </hbox>
+      <hbox>
+        <radiogroup
+          id="__addonRef__-annotationTranslationPosition"
+          class="auto-annotation"
+          orient="horizontal"
+          native="true"
+          preference="__prefsPrefix__.annotationTranslationPosition"
+        >
         <radio
           label="&zotero.__addonRef__.pref.basic.annotationTranslationInComment.label;"
           value="comment"
@@ -33,7 +103,8 @@
           value="body"
         />
       </radiogroup>
-    </hbox>
+      </hbox>      
+    </vbox>
     <checkbox
       id="__addonRef__-enablePopup"
       label="&zotero.__addonRef__.pref.basic.enablePopup.label;"

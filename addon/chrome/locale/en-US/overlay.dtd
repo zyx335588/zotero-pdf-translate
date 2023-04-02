@@ -1,7 +1,18 @@
 <!ENTITY zotero.__addonRef__.pref.general.label "General">
 <!ENTITY zotero.__addonRef__.pref.basic.enableAuto.label "Auto-Trans Selection">
 <!ENTITY zotero.__addonRef__.pref.basic.enablePopup.label "Enable Popup">
-<!ENTITY zotero.__addonRef__.pref.basic.enableComment.label "Auto-Trans Annotation">
+<!ENTITY zotero.__addonRef__.pref.basic.enableComment.label "Auto-Trans Annotation with color:">
+<!ENTITY zotero.__addonRef__.pref.basic.enableAllAnnotation.label "所有批注">
+<!ENTITY zotero.__addonRef__.pref.basic.enableYellowAnnotation.label "黄色批注">
+<!ENTITY zotero.__addonRef__.pref.basic.enableRedAnnotation.label "红色批注">
+<!ENTITY zotero.__addonRef__.pref.basic.enableGreenAnnotation.label "绿色批注">
+<!ENTITY zotero.__addonRef__.pref.basic.enableBlueAnnotation.label "蓝色批注">
+<!ENTITY zotero.__addonRef__.pref.basic.enablePurpleAnnotation.label "紫色批注">
+<!ENTITY zotero.__addonRef__.pref.basic.enableMagentaAnnotation.label "洋红批注">
+<!ENTITY zotero.__addonRef__.pref.basic.enableOrangeAnnotation.label "橘色批注">
+<!ENTITY zotero.__addonRef__.pref.basic.enableGrayAnnotation.label "灰色批注">
+<!ENTITY zotero.__addonRef__.pref.basic.enableOtherAnnotation.label "其它颜色">
+
 <!ENTITY zotero.__addonRef__.pref.basic.annotationTranslationInComment.label "Save to Annotation Comment">
 <!ENTITY zotero.__addonRef__.pref.basic.annotationTranslationInBody.label "Save to Annotation Body">
 <!ENTITY zotero.__addonRef__.pref.basic.enableNote.label "Show 'Add Translation to Note' in Popup">

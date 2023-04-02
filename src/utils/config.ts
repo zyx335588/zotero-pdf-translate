@@ -531,6 +531,17 @@ export const LANG_CODE = <const>[
   { code: "zu-ZA", name: "Zulu (South Africa)" },
 ];
 
+export const colorValueName:{[key:string]:string} = {
+  "#ffd400": "Yellow",
+  "#ff6666": "Red", 
+  "#5fb236": "Green", 
+  "#2ea8e5": "Blue", 
+  "#a28ae5": "Purple", 
+  "#e56eee": "Magenta", 
+  "#f19837": "Orange",
+  "#aaaaaa": "Gray" 
+};
+
 export const SVGIcon = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" width="16" height="16" xml:space="preserve">
 <style type="text/css">

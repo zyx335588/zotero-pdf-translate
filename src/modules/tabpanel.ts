@@ -218,7 +218,7 @@ function buildPanel(panel: HTMLElement, refID: string, force: boolean = false) {
                   type: "command",
                   listener: (e: Event) => {
                     const newService = (e.target as XUL.MenuList).value;
-                    setPref("translateSource", newService);
+                    setPref("dictSource", newService);
                     addon.hooks.onReaderTabPanelRefresh();
                     const data = getLastTranslateTask();
                     if (!data) {
@@ -967,6 +967,7 @@ function updatePanel(panel: HTMLElement) {
   updateHidden("copy", "showSidebarCopy");
 
   setValue("services", getPref("translateSource") as string);
+  setValue("dictservices", getPref("dictSource") as string);
   setValue("langfrom", getPref("sourceLanguage") as string);
   setValue("langto", getPref("targetLanguage") as string);
 
