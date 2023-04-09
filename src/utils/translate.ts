@@ -1,4 +1,5 @@
 import { getService, SecretValidateResult, SERVICES } from "./config";
+import { gptStatusCallback } from "./gptModels";
 import { getString } from "./locale";
 import { niutransStatusCallback } from "./niuTransLogin";
 import { getPref, setPref } from "./prefs";
@@ -342,5 +343,12 @@ export const secretStatusButtonData: {
         "https://github.com/KyleChoy/zotero-pdf-translate/blob/CustomDeepL/README.md"
       );
     },
+  },
+  gpt: {
+    labels: {
+      pass: "service.gpt.secret.pass",
+      fail: "service.gpt.secret.fail",
+    },
+    callback: gptStatusCallback,
   },
 };

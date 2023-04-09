@@ -46,7 +46,8 @@ Once you have the plugin installed simply, open any PDF in your collections.
 - Translate item abstract with right-click menu(v0.8.0). Thanks @iShareStuff
 - Standalone translation window available(v0.7.0). View & compare translations from multiply engines in one window!
   ![](imgs/standalone.png)
-- Dictionary for single word translation(v0.7.1). _Only for en2zh and en2en now_
+- Dictionary for single word translation(v0.7.1).
+- SentenceBySentence Translation(v1.1.0). After a translation, press `shift`+`P` and select `Translate Sentences`. _Only for en2zh and en2en now_. Thanks @MuiseDestiny
 
 ### Q&A
 
@@ -85,21 +86,22 @@ Press shortcut `Ctrl+T` after you selected some text. If you are in the collecti
 ### Service
 
 The default engine is Google Translate. Currently, we support:  
-| Translate Engine | Require Secret | Supported Languages |
-| ---- | ---- | ---- |
-| Google Translate | No | [100+](https://translate.google.com/about/languages/) |
-| Google Translate(API) | No | Use `translate.googleapis.com` |
-| CNKI | No | https://dict.cnki.net |
-| Youdao Translate | No | [100+?](https://ai.youdao.com/DOCSIRMA/html/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%BF%BB%E8%AF%91/API%E6%96%87%E6%A1%A3/%E6%96%87%E6%9C%AC%E7%BF%BB%E8%AF%91%E6%9C%8D%E5%8A%A1/%E6%96%87%E6%9C%AC%E7%BF%BB%E8%AF%91%E6%9C%8D%E5%8A%A1-API%E6%96%87%E6%A1%A3.html) |
-| Youdao Zhiyun | Yes | [100+](https://ai.youdao.com/DOCSIRMA/html/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%BF%BB%E8%AF%91/API%E6%96%87%E6%A1%A3/%E6%96%87%E6%9C%AC%E7%BF%BB%E8%AF%91%E6%9C%8D%E5%8A%A1/%E6%96%87%E6%9C%AC%E7%BF%BB%E8%AF%91%E6%9C%8D%E5%8A%A1-API%E6%96%87%E6%A1%A3.html) |
-| Niu Translate(Trial) | No | [100+](https://niutrans.com/documents/contents/trans_text#accessMode) **UNSTABLE** |
-| Niu Translate | Yes | [100+](https://niutrans.com/documents/contents/trans_text#accessMode) |
-| Microsoft Translate | Yes(free 2M) | [200+](https://docs.microsoft.com/en-us/azure/cognitive-services/translator/language-support) |
-| LingoCloud(Caiyun) Translate | Yes | [zh, en, ja, es, fr, ru](https://open.caiyunapp.com/LingoCloud_API_in_5_minutes) |
-| DeepL Translate | Yes(free 500k) | [100+](https://www.deepl.com/pro?cta=header-prices/#developer) |
-| Baidu Translate | Yes(free-QPS1/free-2M) | [200+](https://fanyi-api.baidu.com/product/11) |
-| Baidu Field | Yes(free-QPS1/free-2M) | [en-zh](https://fanyi-api.baidu.com/product/12) |
-| Tencent Translate | Yes(QPS5, free-5M) | [15](https://cloud.tencent.com/document/product/551/7372) |
+| Translate Engine             | Require Secret         | Supported Languages                                                                                                                                                                                                                                                |
+| ---------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Google Translate             | No                     | [100+](https://translate.google.com/about/languages/)                                                                                                                                                                                                              |
+| Google Translate(API)        | No                     | Use `translate.googleapis.com`                                                                                                                                                                                                                                     |
+| CNKI                         | No                     | https://dict.cnki.net                                                                                                                                                                                                                                              |
+| Youdao Translate             | No                     | [100+?](https://ai.youdao.com/DOCSIRMA/html/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%BF%BB%E8%AF%91/API%E6%96%87%E6%A1%A3/%E6%96%87%E6%9C%AC%E7%BF%BB%E8%AF%91%E6%9C%8D%E5%8A%A1/%E6%96%87%E6%9C%AC%E7%BF%BB%E8%AF%91%E6%9C%8D%E5%8A%A1-API%E6%96%87%E6%A1%A3.html) |
+| Youdao Zhiyun                | Yes                    | [100+](https://ai.youdao.com/DOCSIRMA/html/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%BF%BB%E8%AF%91/API%E6%96%87%E6%A1%A3/%E6%96%87%E6%9C%AC%E7%BF%BB%E8%AF%91%E6%9C%8D%E5%8A%A1/%E6%96%87%E6%9C%AC%E7%BF%BB%E8%AF%91%E6%9C%8D%E5%8A%A1-API%E6%96%87%E6%A1%A3.html)  |
+| Niu Translate(Trial)         | No                     | [100+](https://niutrans.com/documents/contents/trans_text#accessMode) **UNSTABLE**                                                                                                                                                                                 |
+| Niu Translate                | Yes                    | [100+](https://niutrans.com/documents/contents/trans_text#accessMode)                                                                                                                                                                                              |
+| Microsoft Translate          | Yes(free 2M)           | [200+](https://docs.microsoft.com/en-us/azure/cognitive-services/translator/language-support)                                                                                                                                                                      |
+| LingoCloud(Caiyun) Translate | Yes                    | [zh, en, ja, es, fr, ru](https://open.caiyunapp.com/LingoCloud_API_in_5_minutes)                                                                                                                                                                                   |
+| DeepL Translate              | Yes(free 500k)         | [100+](https://www.deepl.com/pro?cta=header-prices/#developer)                                                                                                                                                                                                     |
+| Baidu Translate              | Yes(free-QPS1/free-2M) | [200+](https://fanyi-api.baidu.com/product/11)                                                                                                                                                                                                                     |
+| Baidu Field                  | Yes(free-QPS1/free-2M) | [en-zh](https://fanyi-api.baidu.com/product/12)                                                                                                                                                                                                                    |
+| Tencent Translate            | Yes(QPS5, free-5M)     | [15](https://cloud.tencent.com/document/product/551/7372)                                                                                                                                                                                                          |
+| GPT(OpenAI)                  | Yes(free-$18)          | [Based on the gpt-3.5-turbo model](https://openai.com/pricing#chat)                                                                                                                                                                                                |
 
 > If the engine you want is not yet supported, please post an issue.
 
@@ -161,6 +163,12 @@ Supported service codes are: `deepl,youdao,tencent,aliyun,baidu,caiyun,wechat,so
 
 > [Chinese Document](https://docs.openl.club/#/)
 
+**GPT**  
+Apply [here](https://platform.openai.com/signup).  
+The secret format is `sk-#SecretKey`(split with '#').
+
+> [Chinese Document](https://gist.github.com/GrayXu/f1b72353b4b0493d51d47f0f7498b67b)
+
 ### User Interface
 
 - `Font Size`: The font size of result text, default `12`
@@ -198,6 +206,12 @@ The plugin is built to `./builds/*.xpi`.
 4. Add locale string `service.${serviceId}` in `addon/chrome/locale/${lang}/addon.properties`.
 5. Build and test.
 
+**Extra options for translate service**
+
+If the service requires extra options, the minimal implement would be putting them in the `secret` input in the prefs window, like the existing services does.
+
+If there are complex options, please bind a callback in `src/utils/translate.ts > secretStatusButtonData` which create a highly customizable dialog window with `ztoolkit.Dialog`. See the example of NiuTrans login here: https://github.com/windingwind/zotero-pdf-translate/blob/main/src/utils/niuTransLogin.ts
+
 ## Disclaimer
 
 Use this code under AGPL. No warranties are provided. Keep the laws of your locality in mind!
@@ -215,3 +229,11 @@ I'm windingwind, an active Zotero(https://www.zotero.org) plugin developer. Devo
 Sponsor me to buy a cup of coffee. I spend more than 24 hours every week coding, debugging, and replying to issues in my plugin repositories. The plugins are open-source and totally free.
 
 If you sponsor more than $10 a month, you can list your name/logo here and have priority for feature requests/bug fixes!
+
+## Sponsors
+
+Thanks
+[peachgirl100](https://github.com/peachgirl100)
+and other anonymous sponsors!
+
+If you want to leave your name here, please email me or leave a message with the donation.

@@ -135,6 +135,10 @@ export const SERVICES: Readonly<Readonly<TranslateService>[]> = <const>[
   },
   {
     type: "sentence",
+    id: "deeplx",
+  },
+  {
+    type: "sentence",
     id: "baidu",
     defaultSecret: "appid#key",
     secretValidator(secret: string) {
@@ -244,6 +248,24 @@ export const SERVICES: Readonly<Readonly<TranslateService>[]> = <const>[
             : flag
             ? partsInfo
             : `The secret format of Xftrans Domain Text Translation is AppID#ApiSecret#ApiKey. The secret must have 3 parts joined by '#', but got ${parts?.length}.\n${partsInfo}`,
+      };
+    },
+  },
+  {
+    type: "sentence",
+    id: "gpt",
+    defaultSecret: "",
+    secretValidator(secret: string) {
+      const status = secret.length === 51 && /^sk-/.test(secret);
+      const empty = secret.length === 0;
+      return {
+        secret,
+        status,
+        info: empty
+          ? "The secret is not set."
+          : status
+          ? "Click the button to check connectivity."
+          : "Ths secret key format is invalid.",
       };
     },
   },
