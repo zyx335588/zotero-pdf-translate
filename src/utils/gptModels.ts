@@ -6,6 +6,7 @@ export async function gptStatusCallback(status: boolean) {
   const selectedModel = getPref("gptModel");
   const dialog = new ztoolkit.Dialog(2, 1);
   const dialogData: { [key: string | number]: any } = {
+    url: getPref("gptUrl"),
     models: getPref("gptModel"),
     temperature: parseFloat(getPref("gptTemperature") as string),
     loadCallback: async () => {
@@ -13,14 +14,14 @@ export async function gptStatusCallback(status: boolean) {
 
       try {
         const models = await updateGPTModel();
-        ztoolkit.UI.replaceElement(
+        // Due to an unknown bug with Zotero 7, the `<select>` element cannot be properly rendered.
+        // Toolkit uses a workaround to render the element, so please do not touch the original element and just replace its inner `<option>` elements.
+        // See https://groups.google.com/g/zotero-dev/c/iG763ZlWQ_U
+        const modelsSelect = doc.querySelector("#gptModels")!;
+        modelsSelect.innerHTML = "";
+        ztoolkit.UI.appendElement(
           {
-            tag: "select",
-            id: "gptModels",
-            attributes: {
-              "data-bind": "models",
-              "data-prop": "value",
-            },
+            tag: "fragment",
             children: models.map((model: string) => ({
               tag: "option",
               properties: {
@@ -30,7 +31,7 @@ export async function gptStatusCallback(status: boolean) {
               },
             })),
           },
-          doc.querySelector("#gptModels")!
+          modelsSelect
         );
 
         doc.querySelector("#gptStatus")!.innerHTML = getString(
@@ -63,11 +64,30 @@ export async function gptStatusCallback(status: boolean) {
         namespace: "html",
         styles: {
           display: "grid",
-          "grid-template-columns": "1fr 4fr",
-          "grid-row-gap": "10px",
-          "grid-column-gap": "5px",
+          gridTemplateColumns: "1fr 4fr",
+          rowGap: "10px",
+          columnGap: "5px",
         },
         children: [
+          {
+            tag: "label",
+            namespace: "html",
+            attributes: {
+              for: "url",
+            },
+            properties: {
+              innerHTML: getString("service.gpt.dialog.url"),
+            },
+          },
+          {
+            tag: "input",
+            id: "gptUrl",
+            attributes: {
+              "data-bind": "url",
+              "data-prop": "value",
+              type: "string",
+            },
+          },
           {
             tag: "label",
             namespace: "html",
@@ -129,11 +149,11 @@ export async function gptStatusCallback(status: boolean) {
         namespace: "html",
         styles: {
           display: "grid",
-          "grid-template-columns": "1fr 4fr 1fr",
-          "grid-row-gap": "5px",
-          "grid-column-gap": "5px",
-          "margin-top": "10px",
-          "justify-content": "space-between",
+          gridTemplateColumns: "1fr 4fr 1fr",
+          rowGap: "5px",
+          columnGap: "5px",
+          marginTop: "10px",
+          justifyContent: "space-between",
         },
         children: [
           {
@@ -148,7 +168,7 @@ export async function gptStatusCallback(status: boolean) {
             namespace: "html",
             id: "gptStatus",
             styles: {
-              "text-align": "center",
+              textAlign: "center",
             },
             properties: {
               innerHTML: getString("service.gpt.dialog.status.load"),
@@ -157,14 +177,13 @@ export async function gptStatusCallback(status: boolean) {
           {
             tag: "a",
             styles: {
-              "text-decoration": "none",
+              textDecoration: "none",
             },
             properties: {
               href: "https://gist.github.com/GrayXu/f1b72353b4b0493d51d47f0f7498b67b",
               innerHTML: getString("service.gpt.dialog.help"),
             },
           },
-          ,
         ],
       },
       false
@@ -184,6 +203,7 @@ export async function gptStatusCallback(status: boolean) {
           setPref("gptTemperature", dialogData.temperature.toString());
         }
 
+        setPref("gptUrl", dialogData.url)
         setPref("gptModel", dialogData.models);
       }
       break;

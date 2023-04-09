@@ -114,7 +114,15 @@ export class TranslationServices {
       return false;
     }
     // Remove possible translation results (for annotations).
-    task.raw = task.raw.replace(/🔤[\s\S]*🔤/g, "");
+    const splitChar = task.raw.includes(getPref("splitChar") as string)
+      ? ""
+      : getPref("splitChar");
+    // /🔤[^🔤]*🔤/g
+    const regex =
+      splitChar === ""
+        ? ""
+        : new RegExp(`${splitChar}[^${splitChar}]*${splitChar}`, "g");
+    task.raw = task.raw.replace(regex, "");
     task.result = "";
     // Display raw
     if (!options.noDisplay) {
@@ -170,14 +178,16 @@ export class TranslationServices {
                 (savePosition === "comment"
                   ? item.annotationComment
                   : item.annotationText) || ""
-              ).replace(/🔤[\s\S]*🔤/g, "");
+              ).replace(regex, "");
+              let text = `${
+                currentText[currentText.length - 1] === "\n" ? "" : "\n"
+              }${splitChar}${task.result}${splitChar}\n`;
+              text = splitChar === "" ? text : `${currentText}${text}`;
               item[
                 savePosition === "comment"
                   ? "annotationComment"
                   : "annotationText"
-              ] = `${currentText}${
-                currentText[currentText.length - 1] === "\n" ? "" : "\n"
-              }🔤${task.result}🔤\n`;
+              ] = text;
               item.saveTx();
             }
           }
@@ -200,7 +210,8 @@ export class TranslationServices {
               ztoolkit.ExtraField.setExtraField(
                 item,
                 "abstractTranslation",
-                task.result
+                // A dirty workaround to make it collapsible on Zotero 6
+                ztoolkit.isZotero7() ? task.result : " " + task.result
               );
               item.saveTx();
             }

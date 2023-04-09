@@ -3,6 +3,7 @@ import { config } from "../../package.json";
 import { getString } from "../utils/locale";
 import { getPref, setPref } from "../utils/prefs";
 import { addTranslateTask, getLastTranslateTask } from "../utils/translate";
+import { slice } from "../utils/str";
 
 export function updateReaderPopup() {
   const popup = addon.data.popup.currentPopup;
@@ -10,6 +11,7 @@ export function updateReaderPopup() {
     return;
   }
   const enablePopup = getPref("enablePopup");
+  const hidePopupTextarea = getPref("enableHidePopupTextarea") as boolean;
   Array.from(popup.querySelectorAll(`.${config.addonRef}-readerpopup`)).forEach(
     (elem) => ((elem as HTMLElement).hidden = !enablePopup)
   );
@@ -62,7 +64,7 @@ export function updateReaderPopup() {
     );
   }
   translateButton.hidden = task.status !== "waiting";
-  textarea.hidden = task.status === "waiting";
+  textarea.hidden = hidePopupTextarea || task.status === "waiting";
   textarea.value = task.result || task.raw;
   textarea.style.fontSize = `${getPref("fontSize")}px`;
   textarea.style.lineHeight = `${
@@ -96,6 +98,7 @@ export function buildReaderPopup(readerInstance: _ZoteroTypes.ReaderInstance) {
     `${config.addonRef}-${readerInstance._instanceID}-${type}`;
 
   const onTextAreaCopy = getOnTextAreaCopy(popup, makeId("text"));
+  const hidePopupTextarea = getPref("enableHidePopupTextarea") as boolean;
 
   ztoolkit.UI.appendElement(
     {
@@ -132,7 +135,7 @@ export function buildReaderPopup(readerInstance: _ZoteroTypes.ReaderInstance) {
                   button.ownerDocument.querySelector(
                     `#${makeId("text")}`
                   ) as HTMLTextAreaElement
-                ).hidden = false;
+                ).hidden = hidePopupTextarea;
               },
             },
           ],
@@ -244,22 +247,25 @@ export function buildReaderPopup(readerInstance: _ZoteroTypes.ReaderInstance) {
               },
             },
             {
-              type: "dbclick",
+              type: "dblclick",
               listener: (_ev) => {
                 const textarea = popup.querySelector(
                   `#${makeId("text")}`
                 ) as HTMLTextAreaElement;
                 textarea.selectionStart = 0;
                 textarea.selectionEnd = textarea.value.length;
-                new ztoolkit.Clipboard()
-                  .addText(
-                    textarea.value.slice(
-                      textarea.selectionStart,
-                      textarea.selectionEnd
-                    ),
-                    "text/unicode"
-                  )
-                  .copy();
+                const text = textarea.value.slice(
+                  textarea.selectionStart,
+                  textarea.selectionEnd
+                );
+                new ztoolkit.Clipboard().addText(text, "text/unicode").copy();
+                new ztoolkit.ProgressWindow("Copied to Clipboard")
+                  .createLine({
+                    text: slice(text, 50),
+                    progress: 100,
+                    type: "default",
+                  })
+                  .show();
               },
             },
           ],
