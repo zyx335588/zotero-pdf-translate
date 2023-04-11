@@ -41,16 +41,18 @@ export function updateReaderPopup() {
     ztoolkit.UI.appendElement(
       {
         tag: "fragment",
-        children: task.audio.map((audioData) => ({
+        children: task.audio.map((audioData,idx) => ({
           tag: "button",
           namespace: "html",
           classList: ["toolbarButton"],
           attributes: {
             tabindex: "-1",
-            title: audioData.text,
+            title: audioData.tooltiptext || audioData.text,
           },
           properties: {
-            innerHTML: `🔊 ${audioData.text}`,
+            innerHTML: `${(idx > 0 && task.audio[idx-1].text === audioData.text) 
+                          ? "🔊" 
+                          : "🔊 " + audioData.text}`,
             onclick: () => {
               new (ztoolkit.getGlobal("Audio"))(audioData.url).play();
             },
@@ -63,7 +65,10 @@ export function updateReaderPopup() {
   }
   translateButton.hidden = task.status !== "waiting";
   textarea.hidden = task.status === "waiting";
-  textarea.value = task.result || task.raw;
+  const showResult = getPref("showPlayBtn") && task.phoneticSymbols 
+                      ? task.result.replace(`${task.phoneticSymbols}\n`, "").trim() 
+                      : task.result
+  textarea.value = showResult || task.raw;
   textarea.style.fontSize = `${getPref("fontSize")}px`;
   textarea.style.lineHeight = `${
     Number(getPref("lineHeight")) * Number(getPref("fontSize"))

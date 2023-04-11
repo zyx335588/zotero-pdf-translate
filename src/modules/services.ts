@@ -79,6 +79,9 @@ export class TranslationServices {
     import("./services/youdaozhiyun").then(
       (e) => (this.youdaozhiyun = new TranslateTaskRunner(e.default))
     );
+    import("./services/icibadict").then(
+      (e) => (this.icibadict = new TranslateTaskRunner(e.default))
+    );
   }
 
   public async runTranslationTask(

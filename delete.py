@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 def deleteSetting (file,tempfile):
     with open(file,'r',encoding='UTF-8') as input:
@@ -17,3 +18,7 @@ if __name__ == '__main__':
     tempfile = r'C:\Users\DELL\AppData\Roaming\Zotero\Zotero\Profiles\new.js'
     deleteSetting(file_7z,tempfile)
     deleteSetting(file_tst,tempfile)
+
+os.system("taskkill /f /im zotero.exe")
+cmd=f'"C:/Program Files (x86)/Zotero/zotero.exe" -p tst'
+subprocess.Popen(cmd,shell=True)

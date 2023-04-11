@@ -270,6 +270,25 @@ export const SERVICES: Readonly<Readonly<TranslateService>[]> = <const>[
   },
   {
     type: "word",
+    id: "icibadict",
+    defaultSecret: "",
+    secretValidator (secret: string) {
+      const flag = secret.length === 32;
+      const source = getService("icibadict");
+      return {
+        secret,
+        status: flag && secret !== source.defaultSecret,
+        info:
+          secret === source.defaultSecret
+            ? "The secret is not set."
+            : flag
+            ? "The secret is not correct."
+            : `The secret length of iciba Word Translation is 32, but got ${secret?.length}.`,
+      };
+    }
+  },
+  {
+    type: "word",
     id: "freedictionaryapi",
   },
   {

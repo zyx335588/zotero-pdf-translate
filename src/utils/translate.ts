@@ -23,7 +23,12 @@ export interface TranslateTask {
   /**
    * Audio resources.
    */
-  audio: { text: string; url: string }[];
+  audio: { text: string; url: string; tooltiptext?: string }[];
+  /**
+   * phonetic strings 
+   * part of result?
+   */
+  phoneticSymbols?: string;
   /**
    * Service id.
    */
@@ -176,12 +181,12 @@ export function addTranslateTask(
   return newTask;
 }
 
-export function addTranslateAnnotationTask(itemId: number, auto: boolean = false) {
+export function addTranslateAnnotationTask(itemId: number, autoTranslation: boolean = false) {
   const item = Zotero.Items.get(itemId);
   if (!item) {
     return;
   }
-  if (!auto) {
+  if (!autoTranslation) {
     return addTranslateTask(item.annotationText, item.id, "annotation");
   }
   const translateColorListString = getPref("translateAnnotationColorList") as string;

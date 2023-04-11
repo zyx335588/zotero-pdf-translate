@@ -25,7 +25,9 @@ export default <TranslateTaskProcessor>async function (data) {
     throw "Parse error";
   }
   let tgt = "";
-  for (let line of res.split("，").slice(3)) {
+  const description = res.split("，");
+  data.phoneticSymbols = description[1] + ", " + description[2];
+  for (let line of description.slice(3)) {
     if (line.indexOf("网络释义") > -1) {
       tgt += line.slice(0, line.lastIndexOf("；"));
     } else {
@@ -33,5 +35,8 @@ export default <TranslateTaskProcessor>async function (data) {
     }
   }
   tgt = tgt.replace(/" \/>/g, "");
+  tgt = tgt.replace(/(?:[； ])\s*([a-v]{1,6}\.)/g, "\n$1").trim();
+  tgt = tgt.replace(/\s*网络释义：/,"\n网络释义: ").trim();
+  tgt = data.phoneticSymbols + "\n" + tgt;
   data.result = tgt;
 };
